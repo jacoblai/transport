@@ -22,7 +22,6 @@ import (
 	"net"
 	"strings"
 	"sync"
-	"sync/atomic"
 	"time"
 
 	"github.com/gomqtt/packet"
@@ -196,7 +195,8 @@ func (c *WebSocketConn) write(pkt packet.Packet) error {
 	}
 
 	// increment write counter
-	atomic.AddInt64(&c.writeCounter, int64(n))
+	//atomic.AddInt64(&c.writeCounter, int64(n))
+	c.writeCounter += int64(n)
 
 	return nil
 }
@@ -312,7 +312,8 @@ func (c *WebSocketConn) Receive() (packet.Packet, error) {
 		}
 
 		// increment counter
-		atomic.AddInt64(&c.readCounter, int64(bytesRead))
+		//atomic.AddInt64(&c.readCounter, int64(bytesRead))
+		c.readCounter += int64(bytesRead)
 
 		// reset timeout
 		c.resetTimeout()

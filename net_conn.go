@@ -20,7 +20,6 @@ import (
 	"io"
 	"net"
 	"sync"
-	"sync/atomic"
 	"time"
 
 	"github.com/gomqtt/packet"
@@ -142,7 +141,8 @@ func (c *NetConn) write(pkt packet.Packet) error {
 	}
 
 	// increment write counter
-	atomic.AddInt64(&c.writeCounter, int64(bytesWritten))
+	//atomic.AddInt64(&c.writeCounter, int64(bytesWritten))
+	c.writeCounter += int64(bytesWritten)
 
 	return nil
 }
@@ -253,7 +253,8 @@ func (c *NetConn) Receive() (packet.Packet, error) {
 		}
 
 		// increment counter
-		atomic.AddInt64(&c.readCounter, int64(bytesRead))
+		//atomic.AddInt64(&c.readCounter, int64(bytesRead))
+		c.readCounter += int64(bytesRead)
 
 		// reset timeout
 		c.resetTimeout()
